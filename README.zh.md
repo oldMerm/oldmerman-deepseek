@@ -223,6 +223,51 @@ ChatClient.StreamHandle stream = client.stream(request, new ChatClient.ChunkList
 
 ## 功能集成
 
+### Tool Invocation
+
+The SDK provides `ToolRegister` for registering tools, `@Tool` to describe tool information, and `@Param` to describe parameter information.
+
+
+
+Registering tools:
+
+```java
+ToolRegistry toolRegistry = new ToolRegistry();
+        toolRegistry.register(new WeatherTools());
+        toolRegistry.register(new OldmermanTools());
+```
+
+
+
+Retrieving tool information (for adding to the request context):
+
+```java
+toolRegistry.toToolSpecs() // Add the result to the tool field of CompletionRequest; serialization will be handled and the model will be able to see it
+```
+
+
+
+Tool definition reference:
+
+Return values are automatically serialized to JSON. If a request parameter is an object, `@Param` needs to be written on the object's fields.
+
+```java
+public class WeatherTools {
+
+    public record WeatherQuery(@Param(description = "City to query") String city, int days, Unit unit) {}
+    public enum Unit { C, F }
+
+    @Tool(name = "get_weather", description = "Query the weather for a specified city for the next few days")
+    public WeatherResult getWeather(WeatherQuery q) {
+        return new WeatherResult(q.city(), q.days(), 8, "Sunny");
+    }
+
+    public record WeatherResult(@Param(description = "City name") String city, int days, int temp, String condition) {}
+}
+```
+
+
+
 ### 客户端部分接口
 
 调用provider获取：
