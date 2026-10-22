@@ -10,6 +10,14 @@ import io.github.oldmerman.core.config.DeepSeekConfig;
 import io.github.oldmerman.core.enums.ServiceProvider;
 import io.github.oldmerman.core.exception.DeserializationException;
 
+/**
+ * DeepSeek WebTools Client
+ * <p>WebSearch, Fetch...</p>
+ *
+ * You should provide your api-key in config then use the client
+ * @author oldmerman
+ * @since 1.0.2
+ */
 public class SearchClient {
 
     private final DeepSeekConfig config;

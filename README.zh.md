@@ -223,13 +223,13 @@ ChatClient.StreamHandle stream = client.stream(request, new ChatClient.ChunkList
 
 ## 功能集成
 
-### Tool Invocation
+### 工具调用
 
-The SDK provides `ToolRegister` for registering tools, `@Tool` to describe tool information, and `@Param` to describe parameter information.
+SDK提供了`ToolRegister`注册工具，`@Tool`描述工具信息，`@Param`描述参数信息
 
 
 
-Registering tools:
+注册工具：
 
 ```java
 ToolRegistry toolRegistry = new ToolRegistry();
@@ -239,30 +239,30 @@ ToolRegistry toolRegistry = new ToolRegistry();
 
 
 
-Retrieving tool information (for adding to the request context):
+获取工具信息(用于加入请求上下文)：
 
 ```java
-toolRegistry.toToolSpecs() // Add the result to the tool field of CompletionRequest; serialization will be handled and the model will be able to see it
+toolRegistry.toToolSpecs() // 将结果加入CompletionRequest的tool字段中即可，会处理序列化并保证模型可见
 ```
 
 
 
-Tool definition reference:
+工具定义参考：
 
-Return values are automatically serialized to JSON. If a request parameter is an object, `@Param` needs to be written on the object's fields.
+返回值会自动序列化为JSON，请求参数若为对象，需要将`@Param`写在对象的字段上。
 
 ```java
 public class WeatherTools {
 
-    public record WeatherQuery(@Param(description = "City to query") String city, int days, Unit unit) {}
+    public record WeatherQuery(@Param(description = "需要查询的城市") String city, int days, Unit unit) {}
     public enum Unit { C, F }
 
-    @Tool(name = "get_weather", description = "Query the weather for a specified city for the next few days")
+    @Tool(name = "get_weather", description = "查询指定城市未来几天的天气")
     public WeatherResult getWeather(WeatherQuery q) {
-        return new WeatherResult(q.city(), q.days(), 8, "Sunny");
+        return new WeatherResult(q.city(), q.days(), 8, "晴");
     }
 
-    public record WeatherResult(@Param(description = "City name") String city, int days, int temp, String condition) {}
+    public record WeatherResult(@Param(description = "城市名") String city, int days, int temp, String condition) {}
 }
 ```
 
@@ -350,4 +350,6 @@ SearchResponse res = searchClient.search(SearchRequest.builder().query(q).build(
 
 上述功能即当前SDK实现的主要功能，已经覆盖了DeepSeek官方除FilesAPI中几乎所有的接口，后续会随官方文档更新内容。
 
-![AGI](images/AGI.jpg)
+![AGI](C:\Users\asus\Desktop\博客部署\文章\tec_default\Java\oldmerman-deepseek\assets\AGI.jpg)
+
+
